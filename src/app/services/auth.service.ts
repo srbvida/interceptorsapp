@@ -1,17 +1,33 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {lastValueFrom} from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   token: string = '';
 
+  httpClient = inject(HttpClient);
+  private baseUrl :string = 'http://localhost:8080/api';
+
+
   // Método para simular el login y almacenar el token
-  login(username: string, password: string) {
-    if (username === 'user' && password === 'password') {
-      console.log(username);
-      console.log(password);
-      this.token = 'fake-jwt-token';
+  async login(username: string, password: string) {
+    //this.token =  await lastValueFrom(this.httpClient.get<string>(`${this.baseUrl}/login`));
+    try {
+      // Solicitar el token desde el servidor
+      const response = await lastValueFrom(
+        this.httpClient.post<{token: string}>(`${this.baseUrl}/login`, { username, password })
+      );
+      this.token = response.token;
+
+      console.log('Token almacenado:', this.token);
+    } catch (error) {
+      console.error('Error al realizar el login:', error);
     }
+  }
+  logout() {
+      this.token = '';
   }
 
 

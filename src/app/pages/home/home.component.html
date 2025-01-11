@@ -1,1 +1,17 @@
-<p>home works!</p>
+
+<div class="d-flex gap-2">
+  @if(!isAuthenticated){
+    <a [routerLink] = "['/login']" class="btn btn-success mb-3">Login</a>
+  }@else{
+    <a [routerLink] = "['/nuevo','product']" class="btn btn-success mb-3">Nuevo Producto</a>
+    <a  class="btn btn-success mb-3" (click)="onLogout()">Logout</a>
+  }
+</div>
+
+<div class="row">
+  @for(product of arrProducts; track product.id){
+    <article class="col-12 col-md-6 col-sd-3">
+      <app-card [myProduct]="product"></app-card>
+    </article>
+  }
+</div>
