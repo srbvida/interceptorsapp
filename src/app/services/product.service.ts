@@ -29,7 +29,7 @@ export class ProductService {
   }
 
   update(product: IProduct): Promise<IProduct>{
-    return lastValueFrom(this.httpClient.put<IProduct>(`${this.baseUrl}/products/${product.id}`, product));
+    return lastValueFrom(this.httpClient.put<IProduct>(`${this.baseUrl}/product`, product));
   }
 
   delete(id: number) : Promise<IProduct>{

@@ -19,8 +19,9 @@ export class AuthService {
       const response = await lastValueFrom(
         this.httpClient.post<{token: string}>(`${this.baseUrl}/login`, { username, password })
       );
-      this.token = response.token;
 
+      this.token = response.token.replace('Bearer ', '');
+      localStorage.setItem('authToken', this.token); // Actualizamos el token en el localStorage
       console.log('Token almacenado:', this.token);
     } catch (error) {
       console.error('Error al realizar el login:', error);
@@ -28,6 +29,7 @@ export class AuthService {
   }
   logout() {
       this.token = '';
+      localStorage.removeItem('authToken');
   }
 
 
@@ -37,7 +39,13 @@ export class AuthService {
   }
 
   // Método para verificar si el token existe
+  // isAuthenticated(): boolean {
+  //   return this.token.length > 0;
+  // }
+
   isAuthenticated(): boolean {
-    return this.token.length > 0;
+    const token = localStorage.getItem('authToken');
+    return !!token; // Retorna true si hay un token
   }
+
 }

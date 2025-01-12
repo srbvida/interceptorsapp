@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {AuthService} from '../../services/auth.service';
 import {CardComponent} from '../../components/card/card.component';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {IProduct} from '../../interfaces/IProduct';
 import {ProductService} from '../../services/product.service';
 
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit {
   arrProducts : IProduct[];
   isAuthenticated: boolean = false;
 
-  constructor(private http: HttpClient, private authService: AuthService) {
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {
     this.arrProducts = [];
   }
   async ngOnInit() : Promise<void> {
@@ -35,6 +35,7 @@ export class HomeComponent implements OnInit {
   onLogout(): void {
     this.authService.logout();
     console.log('Sesión cerrada desde el componente');
+    location.reload();
   }
 
   checkAuthentication(): void {

@@ -33,10 +33,10 @@ export class ProductComponent {
 
   ngOnInit(): void{
     this.activatedRoute.params.subscribe(async (params: any) =>{
-      if(params.idproduct){
+      if(params.id){
         //pedir product por id
         this.tipo = "Actualizar";
-        const response = await this.productService.getById(params.idproduct);
+        const response = await this.productService.getById(params.id);
 
         this.productForm = new FormGroup({
           id: new FormControl(response.id, []),

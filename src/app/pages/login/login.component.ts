@@ -23,13 +23,22 @@ export class LoginComponent {
     });
 
   }
-  onSubmit(){
+  async onSubmit(){
     if (this.loginForm.valid) {
       const { username, password } = this.loginForm.value;
       console.log('Datos del formulario:', { username, password });
-      //Llamar al servicio para autenticar al usuario
-      this.authService.login(username, password);
+
+      // // Encriptar la contraseña
+      // const saltRounds = 10; // Número de rondas de encriptación
+      // const hashedPassword = await bcrypt.hash(password, saltRounds);
+      //
+      // console.log('Datos del formulario con password encriptada:', { username, hashedPassword });
+      //Llamar al servicio para autenticar al usuario y esperar a que se complete
+      await this.authService.login(username, password);
+
+      // Verificamos si el usuario está autenticado
       if (this.authService.isAuthenticated()){
+        console.log('Usuario autenticado, redirigiendo...');
         this.router.navigate(['/home']);  // Redirigimos a la página de home
       }else{
         this.errorMessage = 'Usuario o contraseña incorrectos';
